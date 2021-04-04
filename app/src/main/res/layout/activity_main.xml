@@ -51,7 +51,7 @@
             android:id="@+id/tv_date"
             android:layout_width="match_parent"
             android:layout_height="20dp"
-            android:text="       일            월           화          수          목            금           토"
+            android:text="       일           월           화           수           목            금           토"
             android:background="#96CF55"
             />
 
@@ -64,7 +64,7 @@
             android:layout_height="0dp"
             android:layout_width="match_parent"
             android:numColumns="7"
-            android:rowCount ="6"
+            android:rowCount = "6"
 
             >
         </GridView>
