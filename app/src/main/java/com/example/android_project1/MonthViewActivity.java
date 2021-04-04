@@ -8,10 +8,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -68,6 +70,7 @@ public class MonthViewActivity extends AppCompatActivity {
         tvDate = (TextView) findViewById(R.id.tv_date);
         gridView = (GridView) findViewById(R.id.gridview);
 
+
         // 오늘에 날짜를 세팅 해준다.
         long now = System.currentTimeMillis();
         final Date date = new Date(now);
@@ -92,6 +95,16 @@ public class MonthViewActivity extends AppCompatActivity {
             dayList.add("");
         }
         setCalendarDate(mCal.get(Calendar.MONTH) + 1);
+
+        // 항목 클릭 이벤트 처리
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View v,
+                                    int position, long id) {
+                Toast.makeText(MonthViewActivity.this,
+                        ""+(year)+"." + (month+1)+ "."+(dayList.get(position)),
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
 
         Button beforeBtn = findViewById(R.id.before);
         beforeBtn.setOnClickListener(new View.OnClickListener() {
