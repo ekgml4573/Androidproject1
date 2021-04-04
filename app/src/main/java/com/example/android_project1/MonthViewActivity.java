@@ -88,7 +88,7 @@ public class MonthViewActivity extends AppCompatActivity {
         yearmonth.setText(year + "년 " + (month + 1) + "월");
 
         //이번달 1일 무슨요일인지 판단 mCal.set(Year,Month,Day)
-        mCal.set(Integer.parseInt(curYearFormat.format(date)), Integer.parseInt(curMonthFormat.format(date)) - 1, 1);
+        mCal.set(year,month,1);
         int dayNum = mCal.get(Calendar.DAY_OF_WEEK);
         //1일 - 요일 매칭 시키기 위해 공백 add
         for (int i = 1; i < dayNum; i++) {
