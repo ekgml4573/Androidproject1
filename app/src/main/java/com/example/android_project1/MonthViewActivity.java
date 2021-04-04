@@ -64,6 +64,7 @@ public class MonthViewActivity extends AppCompatActivity {
             day = Calendar.getInstance().get(Calendar.DATE);
         }
 
+
         tvDate = (TextView) findViewById(R.id.tv_date);
         gridView = (GridView) findViewById(R.id.gridview);
 
@@ -98,9 +99,14 @@ public class MonthViewActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(),
                         MonthViewActivity.class);
-                intent.putExtra("year",year);
-                intent.putExtra("month",month-1); //1월 이전은 년-1,12월
-
+                if(month < 1){
+                    intent.putExtra("year",year-1);
+                    intent.putExtra("month",11);
+                }
+                else{
+                    intent.putExtra("year",year);
+                    intent.putExtra("month",month-1);
+                } //1월 이전은 년-1,12월
                 startActivity(intent);
                 finish();
 
@@ -113,12 +119,20 @@ public class MonthViewActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(),
                         MonthViewActivity.class);
-                intent.putExtra("year",year);
-                intent.putExtra("month",month+1); //12월 이후는 년+1,1월
+                if(month>10){
+                    intent.putExtra("year",year+1);
+                    intent.putExtra("month",0);
+                }
+                else{
+                    intent.putExtra("year",year);
+                    intent.putExtra("month",month+1);
+                } //12월 이후는 년+1,1월
                 startActivity(intent);
                 finish();
             }
+
         });
+
 
         gridAdapter = new GridAdapter(getApplicationContext(), dayList);
         gridView.setAdapter(gridAdapter);
