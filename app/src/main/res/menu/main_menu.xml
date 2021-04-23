@@ -2,6 +2,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/action_subactivity"
-        android:title="Sub Activity"/>
+        android:id="@+id/월"
+        android:title="월"
+        />
+    <item
+        android:id="@+id/주"
+        android:title="주"
+        />
 </menu>
