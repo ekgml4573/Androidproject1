@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -71,7 +73,7 @@ public class MonthViewActivity extends AppCompatActivity {
         gridView = (GridView) findViewById(R.id.gridview);
 
 
-        // 오늘에 날짜를 세팅 해준다.
+        // 오늘 날짜를 세팅 해준다.
         long now = System.currentTimeMillis();
         final Date date = new Date(now);
         //연,월,일을 따로 저장
@@ -96,7 +98,7 @@ public class MonthViewActivity extends AppCompatActivity {
         }
         setCalendarDate(mCal.get(Calendar.MONTH) + 1);
 
-        // 항목 클릭 이벤트 처리
+        // 항목 클릭 이벤트 처리 (Toast 메세지 출력)
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
@@ -106,6 +108,7 @@ public class MonthViewActivity extends AppCompatActivity {
             }
         });
 
+        //이전 버튼 클릭 시, 이전 월에 해당하는 연/월
         Button beforeBtn = findViewById(R.id.before);
         beforeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,13 +122,14 @@ public class MonthViewActivity extends AppCompatActivity {
                 else{
                     intent.putExtra("year",year);
                     intent.putExtra("month",month-1);
-                } //1월 이전은 년-1,12월
+                } //1월 이전은 년 -1,12월
                 startActivity(intent);
                 finish();
 
             }
         });
 
+        //다음 버튼 클릭 시, 다음 월에 해당하는 연/월
         Button nextBtn = findViewById(R.id.next);
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -139,17 +143,26 @@ public class MonthViewActivity extends AppCompatActivity {
                 else{
                     intent.putExtra("year",year);
                     intent.putExtra("month",month+1);
-                } //12월 이후는 년+1,1월
+                } //12월 이후는 년 +1,1월
                 startActivity(intent);
                 finish();
             }
 
         });
 
-
+        //Adapter 연결
         gridAdapter = new GridAdapter(getApplicationContext(), dayList);
         gridView.setAdapter(gridAdapter);
     }
+
+    //액션 및 오버플로우 메뉴 추가
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
     /**
      * 해당 월에 표시할 일 수 구함
      *
