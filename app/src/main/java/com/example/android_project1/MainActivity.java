@@ -18,6 +18,8 @@ import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -26,7 +28,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class MonthViewActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity {
     /**
      * 연/월 텍스트뷰
      */
@@ -35,17 +37,14 @@ public class MonthViewActivity extends AppCompatActivity {
      * 그리드뷰 어댑터
      */
     private GridAdapter gridAdapter;
-
     /**
      * 일 저장 할 리스트
      */
     private ArrayList<String> dayList;
-
     /**
      * 그리드뷰
      */
     private GridView gridView;
-
     /**
      * 캘린더 변수
      */
@@ -70,10 +69,8 @@ public class MonthViewActivity extends AppCompatActivity {
             day = Calendar.getInstance().get(Calendar.DATE);
         }
 
-
         tvDate = (TextView) findViewById(R.id.tv_date);
         gridView = (GridView) findViewById(R.id.gridview);
-
 
         // 오늘 날짜를 세팅 해준다.
         long now = System.currentTimeMillis();
@@ -88,8 +85,11 @@ public class MonthViewActivity extends AppCompatActivity {
 
         mCal = Calendar.getInstance();
 
-        TextView yearmonth = findViewById(R.id.yearmonth);
-        yearmonth.setText(year + "년 " + (month + 1) + "월");
+        //앱바 타이틀
+        getSupportActionBar().setTitle(year + "년 " + (month + 1) + "월");
+
+        //      TextView yearmonth = findViewById(R.id.yearmonth);
+   //     yearmonth.setText(year + "년 " + (month + 1) + "월");
 
         //이번달 1일 무슨요일인지 판단 mCal.set(Year,Month,Day)
         mCal.set(year,month,1);
@@ -104,61 +104,62 @@ public class MonthViewActivity extends AppCompatActivity {
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
-                Toast.makeText(MonthViewActivity.this,
+                Toast.makeText(MainActivity.this,
                         ""+(year)+"." + (month+1)+ "."+(dayList.get(position)),
                         Toast.LENGTH_SHORT).show();
             }
         });
 
         //이전 버튼 클릭 시, 이전 월에 해당하는 연/월
-        Button beforeBtn = findViewById(R.id.before);
-        beforeBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(),
-                        MonthViewActivity.class);
-                if(month < 1){
-                    intent.putExtra("year",year-1);
-                    intent.putExtra("month",11);
-                }
-                else{
-                    intent.putExtra("year",year);
-                    intent.putExtra("month",month-1);
-                } //1월 이전은 년 -1,12월
-                startActivity(intent);
-                finish();
-
-            }
-        });
+//        Button beforeBtn = findViewById(R.id.before);
+//        beforeBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(getApplicationContext(),
+//                        MainActivity.class);
+//                if(month < 1){
+//                    intent.putExtra("year",year-1);
+//                    intent.putExtra("month",11);
+//                }
+//                else{
+//                    intent.putExtra("year",year);
+//                    intent.putExtra("month",month-1);
+//                } //1월 이전은 년 -1,12월
+//                startActivity(intent);
+//                finish();
+//
+//            }
+//        });
 
         //다음 버튼 클릭 시, 다음 월에 해당하는 연/월
-        Button nextBtn = findViewById(R.id.next);
-        nextBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(),
-                        MonthViewActivity.class);
-                if(month>10){
-                    intent.putExtra("year",year+1);
-                    intent.putExtra("month",0);
-                }
-                else{
-                    intent.putExtra("year",year);
-                    intent.putExtra("month",month+1);
-                } //12월 이후는 년 +1,1월
-                startActivity(intent);
-                finish();
-            }
-
-        });
+    //   Button nextBtn = findViewById(R.id.next);
+     //   nextBtn.setOnClickListener(new View.OnClickListener() {
+     //       @Override
+      //      public void onClick(View v) {
+      //          Intent intent = new Intent(getApplicationContext(),
+//                        MainActivity.class);
+//                if(month>10){
+//                    intent.putExtra("year",year+1);
+//                    intent.putExtra("month",0);
+//                }
+//                else{
+//                    intent.putExtra("year",year);
+//                    intent.putExtra("month",month+1);
+//                } //12월 이후는 년 +1,1월
+//                startActivity(intent);
+//                finish();
+//            }
+//
+//        });
 
         //Adapter 연결
         gridAdapter = new GridAdapter(getApplicationContext(), dayList);
         gridView.setAdapter(gridAdapter);
 
-        //toolbar
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
-        setSupportActionBar(myToolbar);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.add(R.id.main_container, new MonthViewFragment());
+        fragmentTransaction.commit();
 
     }
 
@@ -170,14 +171,25 @@ public class MonthViewActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+    //앱바 월,주
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.월:
-                startActivity(new Intent(this,SubActivity.class));
+            case R.id.month_view:
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.main_container, new MonthViewFragment());
+                fragmentTransaction.commit();
+
+                Toast.makeText(getApplicationContext(), "월", Toast.LENGTH_SHORT).show();
                 return true;
-            case R.id.주:
-                startActivity(new Intent(this,SubActivity.class));
+            case R.id.week_view:
+                fragmentManager = getSupportFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.main_container, new WeekViewFragment());
+                fragmentTransaction.commit();
+
+                Toast.makeText(getApplicationContext(), "주", Toast.LENGTH_SHORT).show();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
