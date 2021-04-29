@@ -2,73 +2,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MonthViewActivity">
-
-    <LinearLayout
+    tools:context=".MainActivity"
+    >
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/vpPager"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:layout_margin="1dp"
-        >
-
-        <Button
-            android:id="@+id/before"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="이전"
-            />
-
-        <TextView
-            android:id="@+id/yearmonth"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:gravity="center"
-            android:layout_gravity="center"
-            android:text="년 월"
-            />
-
-        <Button
-            android:id="@+id/next"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="다음"
-            />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        >
-
-        <TextView
-            android:id="@+id/tv_date"
-            android:layout_width="match_parent"
-            android:layout_height="20dp"
-            android:text="       일           월           화           수           목            금           토"
-            android:background="#96CF55"
-            />
+        android:layout_height="wrap_content"/>
 
 
-
-        <GridView
-            android:layout_marginTop="10dp"
-            android:id="@+id/gridview"
-            android:layout_weight="1"
-            android:layout_height="0dp"
-            android:layout_width="match_parent"
-            android:numColumns="7"
-            android:rowCount = "6"
-
-            >
-        </GridView>
-
-    </LinearLayout>
 
 </LinearLayout>
